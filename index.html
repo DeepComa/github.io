@@ -21,24 +21,35 @@
       width:90%;max-width:1000px;height:650px;position:relative;
       margin:auto;perspective:1200px;transition:1s;z-index:2;
     }
-    .card:hover{transform:rotate(-3deg)}
-    .outside,.inside{height:100%;width:50%;position:absolute;left:50%;top:0}
+
+    .outside,.inside{
+      height:100%;width:50%;position:absolute;left:50%;top:0;
+    }
 
     .inside{
       background:linear-gradient(to right,#e7e7e7,#ffffff 30%);
       line-height:2;padding:20px;text-align:center;
-      display:flex;flex-direction:column;justify-content:space-around;align-items:center;z-index:2;
+      display:flex;flex-direction:column;justify-content:space-around;align-items:center;
+      z-index:2;
     }
 
     .outside{
       transform-style:preserve-3d;
       transform-origin:left;
-      transition:transform 1.2s ease-in-out;
+      transition:transform 1.1s ease-in-out;
       cursor:pointer;z-index:3;
     }
-    .front,.back{height:100%;width:100%;position:absolute;backface-visibility:hidden}
+
+    .front,.back{
+      height:100%;width:100%;position:absolute;backface-visibility:hidden;
+    }
     .front{background-color:#fff}
     .back{transform:rotateY(180deg);background:linear-gradient(to left,#e7e7e7,#ffffff 30%)}
+
+    .outside p{
+      font-size:23px;text-transform:uppercase;margin-top:30px;text-align:center;
+      letter-spacing:6px;color:#000046;padding:0 10px;
+    }
 
     .cake{width:100%;position:absolute;bottom:30px}
     .top-layer,.middle-layer,.bottom-layer{
@@ -60,40 +71,31 @@
       border-radius:0 50% 50% 50%;bottom:48px;transform:rotate(45deg);left:-1px;
     }
 
-    .outside p{
-      font-size:23px;text-transform:uppercase;margin-top:30px;text-align:center;letter-spacing:6px;color:#000046;
-    }
-    .inside h1{font-size:45px;line-height:45px}
     iframe{
       border-radius:12px;width:90%;max-width:420px;height:240px;box-shadow:0 0 15px rgba(0,0,0,.3);
     }
 
     .card.open .outside{transform:rotateY(-115deg) translateX(-10px)}
 
-    /* 📱 MOBİLDE DÜZGÜN GÖRÜNÜM */
+    /* 📱 MOBİL DÜZELTME */
     @media (max-width: 768px){
       body{
-        height:auto;overflow-y:auto;padding:20px 0;
-        display:block;
+        height:auto;overflow-y:auto;padding:40px 0;
+        display:flex;align-items:center;flex-direction:column;
       }
       .card{
-        width:90%;max-width:500px;height:auto;perspective:none;transform:none!important;
-        box-shadow:0 0 10px rgba(0,0,0,0.2);margin:auto;
+        width:95%;height:580px;max-width:480px;
+        transform:none!important;box-shadow:0 0 10px rgba(0,0,0,0.2);
       }
-      /* mobilde sadece iç kısmı gösterelim */
-      .outside{display:none!important;}
-      .inside{
-        position:relative;width:100%;left:0;height:auto;
-        background:#fff;border-radius:10px;padding:20px;
-        display:flex;flex-direction:column;align-items:center;justify-content:center;
+      .outside,.inside{
+        width:100%;left:0;height:100%;
       }
-      .inside p{
-        font-size:15px;line-height:1.7;word-break:break-word;text-align:center;
-      }
-      .inside h1{font-size:30px;margin-top:10px}
-      iframe{
-        width:100%;height:220px;max-width:100%;border-radius:10px;margin-top:15px;
-      }
+      /* Mobilde döndürme açısını küçültüyoruz */
+      .card.open .outside{transform:rotateY(-85deg) translateX(-5px);}
+      .outside p{font-size:18px;letter-spacing:3px}
+      .inside p{font-size:15px;line-height:1.6;text-align:center}
+      .inside h1{font-size:28px;margin-top:10px}
+      iframe{width:100%;height:200px;margin-top:10px}
     }
 
     canvas#fireworks{
@@ -104,7 +106,7 @@
 <body>
   <canvas id="fireworks"></canvas>
   <div class="card" id="card">
-    <div class="outside" id="outside" tabindex="0" aria-label="Kartı aç/kapat">
+    <div class="outside" id="outside">
       <div class="front">
         <p>Mutlu Yıllar Sevdiceğim :)</p>
         <div class="cake">
@@ -130,12 +132,10 @@
       </p>
       <h1>&#127873;</h1>
       <div style="display:flex;justify-content:center;align-items:center;width:100%;padding:10px;">
-        <iframe 
-          src="https://www.youtube.com/embed/csADarC61vI?rel=0&modestbranding=1"
+        <iframe src="https://www.youtube.com/embed/csADarC61vI?rel=0&modestbranding=1"
           title="Doğum Günü Videosu"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+          allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -147,24 +147,20 @@
     function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}
     window.addEventListener("resize",resize);resize();
     let fireworks=[],particles=[];
-    class Firework{
-      constructor(){this.x=Math.random()*w;this.y=h;this.targetY=Math.random()*h*0.5;
+    class Firework{constructor(){this.x=Math.random()*w;this.y=h;this.targetY=Math.random()*h*0.5;
       this.color=Math.random()*360;this.trail=[];this.done=false;this.speed=Math.random()*4+3;}
       update(){this.trail.push({x:this.x,y:this.y});if(this.trail.length>10)this.trail.shift();
       this.y-=this.speed;if(this.y<=this.targetY){this.done=true;explode(this.x,this.y,this.color);}}
       draw(){ctx.beginPath();ctx.moveTo(this.x,this.y);
       for(let i=this.trail.length-1;i>=0;i--){const p=this.trail[i];ctx.lineTo(p.x,p.y);}
-      ctx.strokeStyle=`hsl(${this.color},100%,60%)`;ctx.stroke();}
-    }
-    class Particle{
-      constructor(x,y,color){this.x=x;this.y=y;this.color=color;
+      ctx.strokeStyle=`hsl(${this.color},100%,60%)`;ctx.stroke();}}
+    class Particle{constructor(x,y,color){this.x=x;this.y=y;this.color=color;
       this.angle=Math.random()*2*Math.PI;this.speed=Math.random()*5+2;
       this.alpha=1;this.decay=Math.random()*0.02+0.01;this.size=Math.random()*2+1;}
       update(){this.x+=Math.cos(this.angle)*this.speed;
       this.y+=Math.sin(this.angle)*this.speed+0.3;this.alpha-=this.decay;this.color+=1;}
       draw(){ctx.globalAlpha=this.alpha;ctx.fillStyle=`hsl(${this.color},100%,60%)`;
-      ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}
-    }
+      ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}}
     function explode(x,y,color){for(let i=0;i<80;i++){particles.push(new Particle(x,y,color+Math.random()*30));}}
     function loop(){ctx.fillStyle="rgba(0,0,0,0.2)";ctx.fillRect(0,0,w,h);
       if(Math.random()<0.05)fireworks.push(new Firework());
@@ -176,9 +172,6 @@
     const outside=document.getElementById('outside');
     function toggleCard(){card.classList.toggle('open');}
     outside.addEventListener('click',toggleCard,{passive:true});
-    outside.addEventListener('keydown',e=>{
-      if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleCard();}
-    });
   </script>
 </body>
 </html>
