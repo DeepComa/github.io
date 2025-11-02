@@ -1,54 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Doğum Günü Süprizi</title>
-    <!-- Google Font-->
+    <title>Doğum Günü Sürprizi</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
     <style>
         * {
-            padding: 0;
             margin: 0;
+            padding: 0;
             box-sizing: border-box;
             font-family: "Poppins", sans-serif;
         }
+
         body {
-            background-color: #fdbf00;
+            background: linear-gradient(135deg, #fdbf00, #ffdd75);
+            background-size: 400% 400%;
+            animation: bgmove 12s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
+
+        @keyframes bgmove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .card {
-            width: 1000px;
+            width: 90%;
+            max-width: 1000px;
             height: 650px;
             position: relative;
             margin: auto;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            -webkit-perspective: 1200px;
             perspective: 1200px;
             transition: 1s;
+            z-index: 2;
         }
-        .card:hover {
-            transform: rotate(-5deg);
-        }
-        .card:hover .outside {
-            transform: rotateY(-130deg);
-        }
-        .outside,
-        .inside {
+
+        .card:hover { transform: rotate(-5deg); }
+        .card:hover .outside { transform: rotateY(-130deg); }
+
+        .outside, .inside {
             height: 100%;
             width: 50%;
             position: absolute;
             left: 50.1%;
         }
+
         .inside {
             background: linear-gradient(to right, #e7e7e7, #ffffff 30%);
             line-height: 3;
-            padding: 0 20px;
+            padding: 20px;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -56,78 +61,64 @@
             align-items: center;
             left: 50%;
         }
+
         .outside {
-            -webkit-transform-style: preserve-3d;
             transform-style: preserve-3d;
             z-index: 1;
             transform-origin: left;
             transition: 2s;
             cursor: pointer;
         }
-        .front,
-        .back {
+
+        .front, .back {
             height: 100%;
             width: 100%;
             position: absolute;
-            -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            transform: rotateX(0deg);
         }
+
         .front {
             background-color: #ffffff;
         }
+
         .back {
             transform: rotateY(180deg);
             background: linear-gradient(to left, #e7e7e7, #ffffff 30%);
         }
+
         .cake {
             width: 100%;
             position: absolute;
             bottom: 30px;
         }
-        .top-layer,
-        .middle-layer,
-        .bottom-layer {
+
+        .top-layer, .middle-layer, .bottom-layer {
             height: 80px;
             width: 240px;
             background-repeat: repeat;
             background-size: 60px 100px;
             background-position: 28px 0;
-            background-image: linear-gradient(
-                transparent 50px,
-                #fedbab 50px,
-                #fedbab 60px,
-                transparent 60px
-            ),
+            background-image: linear-gradient(transparent 50px, #fedbab 50px, #fedbab 60px, transparent 60px),
             radial-gradient(circle at 30px 5px, #994c10 30px, #fcbf29 31px);
             border-radius: 10px 10px 0 0;
             position: relative;
             margin: auto;
         }
-        .middle-layer {
-            transform: scale(0.85);
-            top: 6px;
-        }
-        .top-layer {
-            transform: scale(0.7);
-            top: 26px;
-        }
+
+        .middle-layer { transform: scale(0.85); top: 6px; }
+        .top-layer { transform: scale(0.7); top: 26px; }
+
         .candle {
             height: 45px;
             width: 15px;
-            background: repeating-linear-gradient(
-            45deg,
-            #fd3018 0,
-            #fd3018 5px,
-            #ffa89e 5px,
-            #ffa89e 10px
-            );
+            background: repeating-linear-gradient(45deg,#fd3018 0,#fd3018 5px,#ffa89e 5px,#ffa89e 10px);
             position: absolute;
             margin: auto;
             left: 0;
             right: 0;
             bottom: 202px;
         }
+
         .candle:before {
             content: "";
             position: absolute;
@@ -139,6 +130,7 @@
             transform: rotate(45deg);
             left: -1px;
         }
+
         .outside p {
             font-size: 23px;
             text-transform: uppercase;
@@ -147,17 +139,49 @@
             letter-spacing: 6px;
             color: #000046;
         }
+
         .inside h1 {
             font-size: 45px;
             line-height: 45px;
         }
+
+        iframe {
+            border-radius: 12px;
+            width: 90%;
+            max-width: 420px;
+            height: 240px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            body { height: auto; padding: 40px 0; }
+            .card { width: 95%; height: auto; }
+            .outside, .inside { position: relative; width: 100%; left: 0; transform: none !important; }
+            .outside { height: auto; transform: none !important; cursor: default; }
+            .card:hover, .card:hover .outside { transform: none; }
+            .inside { padding: 20px; }
+            .inside p { font-size: 14px; line-height: 1.6; }
+            .inside h1 { font-size: 30px; }
+            iframe { width: 100%; height: 200px; }
+        }
+
+        canvas#fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
+    <canvas id="fireworks"></canvas>
     <div class="card">
         <div class="outside">
             <div class="front">
-                <p>Mutlu Yıllar:) </p>
+                <p>Mutlu Yıllar Sevdiceğim :)</p>
                 <div class="cake">
                     <div class="top-layer"></div>
                     <div class="middle-layer"></div>
@@ -167,12 +191,127 @@
             </div>
             <div class="back"></div>
         </div>
+
         <div class="inside">
-            <p style="font-size: x-small;">Seninle ilk tanıştığımda siyah bir gülü andırıyordun bana, oldukça ender, güzel ve bir o kadar da dikenli :) İlk başlarda nedenini anlayamadığım bir şekilde kendini dış dünyadan soyutlamış, yorgun ve kalbi kırık bir çiçek görüyordum.Sonrasın da fark ettim ki incitilip duygularının suiistimal edilmiş biri olduğunu. Yaşadığın şeyleri belki tam anlamıyla hissedemeyebilirim, fakat emin ol, anlayabiliyordum. Elinden tutmak, tekrar o eski neşeli hallerini, hayattan keyif alan gözlerini gülümsemeni görmek istiyordum, çünkü sen güldüğünde ben de gülüyordum. Nedenini bilmediğim bir şekilde seninle birlikte olunca kalbim ısınıyor, tüm sorunlarımı unutup olmam gereken kişinin yanındaymış gibi hissediyordum. Ama bu konuya daha fazla giriş yapmayacağım, sen zaten biliyorsun söyleyeceklerimi. Son olarak sadece şu sözü eklemek istiyorum: 'Seninle konuşabilecek kadar hünerli değildi belki kelimelerim, ama ruhunu derinden sallayacak kadar derindi hissettiklerim.' Çikolatalı SÜT, yeni yaşında sağlık, saadet ve mutluluk dilerim. Doğum Günün Kutlu Olsun, Yüreğimdesin <3."  
-                ortak ve en çok gülümsediğini gördüğüm tek anı bu var o yüzden buraya bırakmak istedim.</p>
+           <p style="font-size: x-small;">
+Ceylanım,  
+Hayat bazen yorar ama sen hep iyi gelen bir yer gibi oldun bana.  
+Seni tanıdığım için gerçekten şanslı hissediyorum.  
+Varlığın sakinleştiriyor, sesin bile günü güzelleştirebiliyor.  
+Seninle konuşmak, birlikte gülmek, bazen sadece susmak bile iyi geliyor.  
+Sadece bugün değil, her zaman mutlu olmanı istiyorum.  
+İyi ki varsın, iyi ki doğdun.  
+<span style="text-decoration: underline; font-weight: bold;">
+Seninle her şey biraz daha güzel oluyor. 🌼
+</span>
+</p>
+
             <h1>&#127873;</h1>
-            <iframe width="400" height="200" src="https://www.youtube.com/embed/0sCia6k3OWo" frameborder="0" allowfullscreen></iframe>
+
+            <!-- 🔹 DÜZGÜN HİZALANMIŞ VE KART İÇİNE GÖMÜLMÜŞ YOUTUBE VİDEO -->
+            <div style="display:flex; justify-content:center; align-items:center; width:100%; padding:10px;">
+                <iframe 
+                    src="https://www.youtube.com/embed/csADarC61vI?rel=0&modestbranding=1"
+                    title="Doğum Günü Videosu"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
         </div>
     </div>
+
+    <script>
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    let w, h;
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    let fireworks = [], particles = [];
+
+    class Firework {
+      constructor() {
+        this.x = Math.random() * w;
+        this.y = h;
+        this.targetY = Math.random() * h * 0.5;
+        this.color = Math.random() * 360;
+        this.trail = [];
+        this.done = false;
+        this.speed = Math.random() * 4 + 3;
+      }
+      update() {
+        this.trail.push({ x: this.x, y: this.y });
+        if (this.trail.length > 10) this.trail.shift();
+        this.y -= this.speed;
+        if (this.y <= this.targetY) {
+          this.done = true;
+          explode(this.x, this.y, this.color);
+        }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        for (let i = this.trail.length - 1; i >= 0; i--) {
+          let p = this.trail[i];
+          ctx.lineTo(p.x, p.y);
+        }
+        ctx.strokeStyle = `hsl(${this.color},100%,60%)`;
+        ctx.stroke();
+      }
+    }
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.angle = Math.random() * 2 * Math.PI;
+        this.speed = Math.random() * 5 + 2;
+        this.alpha = 1;
+        this.decay = Math.random() * 0.02 + 0.01;
+        this.size = Math.random() * 2 + 1;
+      }
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed + 0.3;
+        this.alpha -= this.decay;
+        this.color += 1;
+      }
+      draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = `hsl(${this.color},100%,60%)`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function explode(x, y, color) {
+      for (let i = 0; i < 80; i++) {
+        particles.push(new Particle(x, y, color + Math.random() * 30));
+      }
+    }
+
+    function loop() {
+      ctx.fillStyle = "rgba(0,0,0,0.2)";
+      ctx.fillRect(0, 0, w, h);
+      if (Math.random() < 0.05) fireworks.push(new Firework());
+      fireworks.forEach((f, i) => {
+        f.update(); f.draw();
+        if (f.done) fireworks.splice(i, 1);
+      });
+      particles.forEach((p, i) => {
+        p.update(); p.draw();
+        if (p.alpha <= 0) particles.splice(i, 1);
+      });
+      requestAnimationFrame(loop);
+    }
+    loop();
+    </script>
 </body>
-</html>  
+</html>
