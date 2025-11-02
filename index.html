@@ -52,7 +52,7 @@
 
         .inside {
             background: linear-gradient(to right, #e7e7e7, #ffffff 30%);
-            line-height: 3;
+            line-height: 2;
             padding: 20px;
             text-align: center;
             display: flex;
@@ -153,16 +153,67 @@
             box-shadow: 0 0 15px rgba(0,0,0,0.3);
         }
 
+        /* 💡 MOBİL UYUMLULUK */
         @media (max-width: 768px) {
-            body { height: auto; padding: 40px 0; }
-            .card { width: 95%; height: auto; }
-            .outside, .inside { position: relative; width: 100%; left: 0; transform: none !important; }
-            .outside { height: auto; transform: none !important; cursor: default; }
-            .card:hover, .card:hover .outside { transform: none; }
-            .inside { padding: 20px; }
-            .inside p { font-size: 14px; line-height: 1.6; }
-            .inside h1 { font-size: 30px; }
-            iframe { width: 100%; height: 200px; }
+            body { 
+                height: auto; 
+                padding: 30px 10px; 
+                overflow-y: auto; 
+            }
+
+            .card { 
+                width: 95%; 
+                height: auto; 
+                perspective: none; 
+                transform: none !important;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            }
+
+            .outside, .inside {
+                position: relative; 
+                width: 100%; 
+                left: 0; 
+                transform: none !important; 
+                height: auto;
+            }
+
+            .outside {
+                background: #fff;
+                cursor: default;
+                border-radius: 10px 10px 0 0;
+                transform: none !important;
+                transition: none;
+            }
+
+            .inside {
+                padding: 20px;
+                background: #fff;
+                border-radius: 0 0 10px 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .inside p {
+                font-size: 15px;
+                line-height: 1.7;
+                word-break: break-word;
+                text-align: center;
+            }
+
+            .inside h1 {
+                font-size: 30px;
+                margin-top: 10px;
+            }
+
+            iframe {
+                width: 100%;
+                height: 220px;
+                max-width: 100%;
+                border-radius: 10px;
+                margin-top: 15px;
+            }
         }
 
         canvas#fireworks {
@@ -208,7 +259,6 @@ Seninle her şey biraz daha güzel oluyor. 🌼
 
             <h1>&#127873;</h1>
 
-            <!-- 🔹 DÜZGÜN HİZALANMIŞ VE KART İÇİNE GÖMÜLMÜŞ YOUTUBE VİDEO -->
             <div style="display:flex; justify-content:center; align-items:center; width:100%; padding:10px;">
                 <iframe 
                     src="https://www.youtube.com/embed/csADarC61vI?rel=0&modestbranding=1"
